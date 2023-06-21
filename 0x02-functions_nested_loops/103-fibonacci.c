@@ -8,18 +8,16 @@
 
 int main(void)
 {
-	unsigned long int a = 1, b = 2, c = 0, sum = 0;
+	unsigned long int a = 0, b = 1, c = 0, sum = 0;
 
-	printf("%lu, %lu", a, b);
-	while (sum <= 4000000)
+	while (sum < 4000000)
 	{
 		c = a + b;
-		sum += c;
-		printf(", %lu", c);
 		a = b;
 		b = c;
+		if (c % 2 == 0)
+			sum += c;
 	}
-	printf("\n");
 	printf("%lu\n", sum);
 	return (0);
 }
