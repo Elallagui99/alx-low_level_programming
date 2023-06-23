@@ -1,30 +1,44 @@
 #include <stdio.h>
 
 /**
+ * isprime - checks if num is prime
+ * @n: num to checks
+ * Return: 1 if success, 0 otherwie
+ */
+
+int isprime(int n)
+{
+	int i;
+
+	if (n <= 1)
+		return (0);
+	for (i = 2; i <= n / 2; i++)
+	{
+		if (n % i == 0)
+			return (0);
+	}
+	return (1);
+}
+/**
  * main - entry point
  * Return: 0
  */
 
 int main(void)
 {
-	int i, max;
+	int i;
 	long int num = 612852475143;
 
-	while (num % 2 == 0)
+	for (i = num / 2; i >= 2; i--)
 	{
-		max = 2;
-		num /= 2;
-	}
-	for (i = 3; i <= sqrt(num); i = i + 2)
-	{
-		while (num % i == 0)
+		if (num % i == 0)
 		{
-			max = i;
-			num /= i;
+			if (isprime(i))
+			{
+				printf("the largest prime factor of %lu is: %d\n", num, i);
+				break;
+			}
 		}
 	}
-	if (num > 2)
-		max = num;
-	printf("%d\n", max);
 	return (0);
 }
