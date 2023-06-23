@@ -27,7 +27,7 @@ int isprime(int n)
 int main(void)
 {
 	int i;
-	long int num = 612852475143;
+	unsigned long int num = 612852475143;
 
 	for (i = num / 2; i >= 2; i--)
 	{
