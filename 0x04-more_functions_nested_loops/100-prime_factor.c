@@ -35,7 +35,7 @@ int main(void)
 		{
 			if (isprime(i))
 			{
-				printf("the largest prime factor of %lu is: %d\n", num, i);
+				printf("%d\n", i);
 				break;
 			}
 		}
