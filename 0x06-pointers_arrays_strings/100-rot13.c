@@ -17,7 +17,10 @@ char *rot13(char *s)
 		for (j = 0; arr1[j] != '\0'; j++)
 		{
 			if (s[i] == arr1[j])
-			       s[i] = arr2[j];
+			{
+				s[i] = arr2[j];
+				break;
+			}
 		}
 
 	}
