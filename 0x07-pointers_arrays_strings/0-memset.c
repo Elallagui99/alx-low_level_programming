@@ -1,6 +1,7 @@
 #include "main.h"
 
-/**_memset - filsmemory with const byte
+/**
+ * _memset - filsmemory with const byte
  * @s: pointer to string
  * @b: const to fill with
  * @n: n byte to fill
