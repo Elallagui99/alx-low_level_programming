@@ -1,5 +1,5 @@
 #include "main.h"
-#include <stddef.h>
+
 /**
  * _strchr - locates a char in a string
  * @s: sting to search in
@@ -17,5 +17,7 @@ char *_strchr(char *s, char c)
 		if (s[i] == c)
 			return (s + i);
 	}
-	return (NULL);
+	if (s[i] == c)
+		return (s + i);
+	return (0);
 }
