@@ -42,7 +42,7 @@ int _isdigit(int c)
  */
 int main(int argc, char *argv[])
 {
-	long int mul;
+	int mul;
 
 	if (argc != 3 || _isdigit(_atoi(argv[1])) || _isdigit(_atoi(argv[2])))
 	{
