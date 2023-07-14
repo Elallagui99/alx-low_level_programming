@@ -42,9 +42,9 @@ int _isdigit(int c)
  */
 int main(int argc, char *argv[])
 {
-	int mul;
+	long int mul;
 
-	if (argc != 3 || !_isdigit(_atoi(argv[1])) || !_isdigit(_atoi(argv[2])))
+	if (argc != 3 || _isdigit(_atoi(argv[1])) || _isdigit(_atoi(argv[2])))
 	{
 		_putchar('E');
 		_putchar('r');
@@ -58,7 +58,7 @@ int main(int argc, char *argv[])
 		exit(98);
 
 	mul = _atoi(argv[1]) * _atoi(argv[2]);
-	_putchar(mul + '0');
+	_putchar(48 + mul);
 	_putchar('\n');
 	return (0);
 }
