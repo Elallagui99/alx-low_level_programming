@@ -70,7 +70,7 @@ void print_all(const char * const format, ...)
 			print[j].f(l);
 			s = ", ";
 		}
-		i++;
+		++i;
 	}
 	printf("\n");
 	va_end(l);
