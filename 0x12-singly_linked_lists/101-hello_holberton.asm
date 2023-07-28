@@ -1,22 +1,23 @@
-.text
-        .section        .rodata
-.LC0:
-        .string "Hello, Holberton"
-        .text
-        .globl  main
-        .type   main, @function
-main:
-.LFB0:
-        .cfi_startproc
-        endbr64
-        pushq   %rbp
-        .cfi_def_cfa_offset 16
-        .cfi_offset 6, -16
-        movq    %rsp, %rbp
-        .cfi_def_cfa_register 6
-        leaq    .LC0(%rip), %rdi
-        call    puts@PLT
-        movl    $0, %eax
-        popq    %rbp
-        .cfi_def_cfa 7, 8
-        ret
+section .data ;data section
+	msg db "Hello, holberton", 0 ;define string var msg
+	fmt db "%s", 10, 0 ;define string var fmt
+
+section .text ;code section
+	global main   ;the entry point
+	extern printf ;declare function to call
+
+main: ;the entry point program label
+	push rdp ;set stack frame
+
+	;start passing arguments to printf
+	mov rdi, fmt ;format or the fist argument
+	mov rsi, msg ;the argument to print
+	mov rax, 0   ;move 0 into rax register
+
+	;call printf function
+	call printf
+
+	;clean the stack nd return
+	pop rdp ;restore stack
+	mov rax,0 ;no error to return
+	ret ;return
