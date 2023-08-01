@@ -4,7 +4,7 @@
 /**
  * struct listint_s - singly linked list
  * @n: intger
- * @: nest: points to next node
+ * @next: points to next node
  *
  * Description: singly lined list node stricture
  *
@@ -13,7 +13,7 @@ typedef struct listint_s
 {
 	int n;
 	struct listint_s *next;
-}listint_t;
+} listint_t;
 
 int _putchar(char c);
 size_t print_listint(const listint_t *h);
