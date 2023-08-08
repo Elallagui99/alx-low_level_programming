@@ -1,3 +1,5 @@
+#include "main.h"
+
 /**
  * wr_error - function that convert
  * @code: a
