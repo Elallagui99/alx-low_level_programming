@@ -1,99 +1,87 @@
 #include "main.h"
-#include <stdlib.h>
 #include <stdio.h>
-#include <unistd.h>
+#include <stdlib.h>
+
 
 /**
- * read_validate - read file and validate the content
- * @ac: number of files
- * @av: name of each file
+ * create_buffer - Allocates 1024 bytes for a buffer.
+ * @file: The name of the file buffer is storing chars for.
+ *
+ * Return: A pointer to the newly-allocated buffer.
  */
-void read_validate(int ac, char **av)
+char *create_buffer(char *file)
 {
-	int fp;
-	ssize_t bytes;
-	char *buff;
-	int letters = 1024;
+	char *buffer;
 
-	if (ac != 3)
+	buffer = malloc(sizeof(char) * 1024);
+
+	if (buffer == NULL)
+	{
+		dprintf(STDERR_FILENO, "Error: Can't write to %s\n", file);
+		exit(99);
+	}
+	return (buffer);
+}
+
+/**
+ * close_file - Closes file descriptors.
+ * @fd: The file descriptor to be closed.
+ */
+void close_file(int fd)
+{
+	int c;
+
+	c = close(fd);
+
+	if (c == -1)
+	{
+		dprintf(STDERR_FILENO, "Error: Can't close fd %d\n", fd);
+		exit(100);
+	}
+}
+
+/**
+ * main - Copies the contents of a file to another file.
+ * @argc: The number of arguments supplied to the program.
+ * @argv: An array of pointers to the arguments.
+ *
+ * Return: 0 on success.
+ */
+int main(int argc, char *argv[])
+{
+	int from, to, r, w;
+	char *buffer;
+
+	if (argc != 3)
 	{
 		dprintf(STDERR_FILENO, "Usage: cp file_from file_to\n");
 		exit(97);
 	}
 
-	fp = open(av[1], O_RDONLY);
-	if (fp == -1)
-	{
-		dprintf(STDERR_FILENO, "Error: Can't read from file %s\n", av[1]);
-		exit(98);
-	}
+	buffer = create_buffer(argv[2]);
+	from = open(argv[1], O_RDONLY);
+	r = read(from, buffer, 1024);
+	to = open(argv[2], O_CREAT | O_WRONLY | O_TRUNC, 0664);
+	do {
+		if (from == -1 || r == -1)
+		{
+			dprintf(STDERR_FILENO, "Error: Can't read from file %s\n", argv[1]);
+			free(buffer);
+			exit(98);
+		}
 
-	buff = malloc(letters * sizeof(char));
-	if (!buff)
-		exit(0);
-
-	bytes = read(fp, buff, letters);
-	if (bytes == -1)
-	{
-		free(buff);
-		dprintf(STDERR_FILENO, "Error: Can't read from file %s\n", av[1]);
-		exit(98);
-	}
-	close(fp);
-}
-
-/**
- * write_close - write the content into the other file and close it
- * @av: name of the files
- */
-void write_close(char **av)
-{
-	int fp, close_fp;
-	ssize_t bytes;
-	char *buff;
-	int len = 0;
-
-	fp = open(av[2], O_RDWR | O_CREAT | O_TRUNC, 0664);
-	if (fp == -1)
-	{
-		dprintf(STDERR_FILENO, "Error: Can't write to %s\n", av[2]);
-		exit(99);
-	}
-
-	buff = malloc(1024 * sizeof(char));
-	if (!buff)
-		exit(0);
-
-	while (buff && buff[len])
-		len++;
-
-	bytes = write(fp, buff, len);
-	if (bytes == -1)
-	{
-		free(buff);
-		dprintf(STDERR_FILENO, "Error: Can't write to %s\n", av[2]);
-		exit(99);
-	}
-
-	close_fp = close(fp);
-	if (close_fp == -1)
-	{
-		dprintf(STDERR_FILENO, "Error: Can't close fd %d\n", fp);
-		exit(100);
-	}
-	free(buff);
-}
-
-/**
- * main - copies the content of a file to anther file
- * @argv: arguments
- * @argc: number of rguments
- * Return: always 0
- */
-
-int main(int argc, char **argv)
-{
-	read_validate(argc, argv);
-	write_close(argv);
+		w = write(to, buffer, r);
+		if (to == -1 || w == -1)
+		{
+			dprintf(STDERR_FILENO, "Error: Can't write to %s\n", argv[2]);
+			free(buffer);
+			exit(99);
+		}
+		r = read(from, buffer, 1024);
+		to = open(argv[2], O_WRONLY | O_APPEND);
+	} while (r > 0);
+	free(buffer);
+	close_file(from);
+	close_file(to);
 	return (0);
 }
